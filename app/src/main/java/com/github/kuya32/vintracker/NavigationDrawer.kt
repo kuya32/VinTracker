@@ -1,5 +1,7 @@
 package com.github.kuya32.vintracker
 
+import android.graphics.drawable.Drawable
+import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,40 +23,58 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-
 @Composable
-fun DrawerHeader() {
-    Column(
+fun DrawerHeader(
+    profileImage: Int = R.drawable.ic_profile_image_placeholder,
+    profileName: String = "Profile Name",
+    profileEmail: String = "xxx@gmail.com"
+) {
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .drawBehind {
-                val strokeWidth = 2f
-                val x = size.width - strokeWidth
-                val y = size.height - strokeWidth
-
-                drawLine(
-                    color = Color(0xff003314),
-                    start = Offset(0f, y),
-                    end = Offset(x, y),
-                    strokeWidth = strokeWidth
-                )
-            }
     ) {
         Image(
-            imageVector = Icons.Default.Person,
-            contentDescription = stringResource(id = R.string.profile_image),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(32.dp)
-                .clip(CircleShape)
-                .border(1.dp, Color(0xff003314), CircleShape)
+            painter = painterResource(id = R.drawable.ic_nav_drawer_background),
+            contentDescription = stringResource(id = R.string.nav_header_background),
+            contentScale = ContentScale.Crop
         )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Image(
+                painter = painterResource(id = profileImage),
+                contentDescription = stringResource(id = R.string.profile_image),
+                modifier = Modifier
+                    .size(104.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, Color(0xff003314), CircleShape),
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = profileName,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = profileEmail,
+                fontSize = 16.sp,
+                fontStyle = FontStyle.Italic
+            )
+        }
     }
 }
 

@@ -10,4 +10,8 @@
     <string name="add_a_client">Add a client</string>
     <string name="search_for_client">Search for client</string>
     <string name="profile_image">Profile Image</string>
+    <string name="profile_name">Profile name</string>
+    <string name="nav_header_background">Navigation header background</string>
+    <string name="make">Make</string>
+    <string name="model">Model</string>
 </resources>
