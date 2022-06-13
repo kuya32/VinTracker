@@ -104,7 +104,7 @@ fun SearchScreen(
         ) {
             Text(text = stringResource(id = R.string.search))
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
