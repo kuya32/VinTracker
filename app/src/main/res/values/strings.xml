@@ -15,4 +15,6 @@
     <string name="make">Make</string>
     <string name="model">Model</string>
     <string name="search">Search</string>
+    <string name="string_password_visible_content_description">Password is shown</string>
+    <string name="string_password_hidden_content_description">Password is hidden</string>
 </resources>

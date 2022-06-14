@@ -1,4 +1,4 @@
-package com.github.kuya32.vintracker.ui.theme
+package com.github.kuya32.vintracker.core.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

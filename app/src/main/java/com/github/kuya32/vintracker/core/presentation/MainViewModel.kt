@@ -1,4 +1,4 @@
-package com.github.kuya32.vintracker
+package com.github.kuya32.vintracker.core.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
