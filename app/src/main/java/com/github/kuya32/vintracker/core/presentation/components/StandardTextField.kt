@@ -44,7 +44,6 @@ fun StandardTextField(
     isPasswordVisible: Boolean = false,
     onPasswordToggleClick: (Boolean) -> Unit = {},
 ) {
-    val focusManager = LocalFocusManager.current
     TextField(
         value = text,
         onValueChange = {
@@ -52,7 +51,11 @@ fun StandardTextField(
                 onValueChange(it)
             }
         },
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxWidth()
+            .semantics {
+                testTag = TestTags.STANDARD_TEXT_FIELD
+            },
         label = {
             Text(text = label)
         },
@@ -104,12 +107,8 @@ fun StandardTextField(
             imeAction = imeAction
         ),
         keyboardActions = keyboardActions,
-        singleLine = true,
-        modifier = modifier
-            .fillMaxWidth()
-            .semantics {
-                testTag = TestTags.STANDARD_TEXT_FIELD
-            }
+        singleLine = singleLine,
+        maxLines = maxLines
     )
     if (error.isNotEmpty()) {
         Text(
