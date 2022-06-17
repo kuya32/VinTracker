@@ -3,6 +3,7 @@ package com.github.kuya32.vintracker.feature_auth.presentation.login
 import android.widget.Space
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -13,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
@@ -20,6 +22,7 @@ import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -30,13 +33,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.kuya32.vintracker.AppNavGraph
 import com.github.kuya32.vintracker.R
 import com.github.kuya32.vintracker.core.presentation.components.StandardTextField
+import com.github.kuya32.vintracker.destinations.ForgotPasswordScreenDestination
 import com.github.kuya32.vintracker.destinations.MainAppScreenDestination
+import com.github.kuya32.vintracker.destinations.SignUpScreenDestination
 import com.github.kuya32.vintracker.feature_auth.presentation.utils.AuthErrors
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@RootNavGraph(start = true)
+@RootNavGraph
 @Destination
 @Composable
 fun LoginScreen(
@@ -48,22 +53,24 @@ fun LoginScreen(
     val passwordState = viewModel.passwordState.value
     val loginState = viewModel.loginState.value
 
-    Surface(
-        color = MaterialTheme.colorScheme.background,
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
     ) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(32.dp))
                 .background(MaterialTheme.colorScheme.primary)
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .padding(16.dp)
+                    .border(1.dp, Color.Red)
+
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -100,9 +107,11 @@ fun LoginScreen(
                     imeAction = ImeAction.Next,
                     keyboardActions = KeyboardActions(onNext = {
                         focusManager.moveFocus(FocusDirection.Down)
-                        }
+                    }
                     ),
                     singleLine = true,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 StandardTextField(
@@ -126,6 +135,8 @@ fun LoginScreen(
                     }
                     ),
                     singleLine = true,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp),
                     isPasswordVisible = passwordState.isPasswordVisible,
                     onPasswordToggleClick = {
                         viewModel.onEvent(LoginEvent.ToggledPasswordVisibility)
@@ -139,6 +150,7 @@ fun LoginScreen(
                     contentPadding = PaddingValues(16.dp),
                     modifier = Modifier
                         .align(Alignment.End)
+                        .padding(end = 16.dp)
                 ) {
                     Text(
                         text = stringResource(id = R.string.login),
@@ -150,28 +162,38 @@ fun LoginScreen(
                         contentDescription = stringResource(id = R.string.login_icon)
                     )
                 }
-            }
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .padding(bottom = 32.dp)
-                    .align(Alignment.BottomCenter)
-            ) {
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = stringResource(id = R.string.dont_have_an_account),
+                    text = stringResource(id = R.string.forgot_password),
+                    fontStyle = FontStyle.Italic,
                     modifier = Modifier
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = stringResource(id = R.string.sign_up),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
+                        .padding(bottom = 16.dp)
                         .clickable {
-                            navigator.navigate()
+                            navigator.navigate(ForgotPasswordScreenDestination)
                         }
                 )
             }
+        }
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .padding(bottom = 32.dp)
+                .align(Alignment.BottomCenter)
+        ) {
+            Text(
+                text = stringResource(id = R.string.dont_have_an_account),
+                modifier = Modifier
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = stringResource(id = R.string.sign_up),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .clickable {
+                        navigator.navigate(SignUpScreenDestination)
+                    }
+            )
         }
     }
 
