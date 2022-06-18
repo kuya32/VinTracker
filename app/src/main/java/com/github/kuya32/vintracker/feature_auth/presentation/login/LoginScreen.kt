@@ -33,6 +33,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.kuya32.vintracker.AppNavGraph
 import com.github.kuya32.vintracker.R
 import com.github.kuya32.vintracker.core.presentation.components.StandardTextField
+import com.github.kuya32.vintracker.core.presentation.ui.theme.mediumSpace
+import com.github.kuya32.vintracker.core.presentation.ui.theme.smallSpace
 import com.github.kuya32.vintracker.destinations.ForgotPasswordScreenDestination
 import com.github.kuya32.vintracker.destinations.MainAppScreenDestination
 import com.github.kuya32.vintracker.destinations.SignUpScreenDestination
@@ -61,7 +63,7 @@ fun LoginScreen(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = mediumSpace)
                 .clip(RoundedCornerShape(32.dp))
                 .background(MaterialTheme.colorScheme.primary)
         ) {
@@ -69,8 +71,6 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .border(1.dp, Color.Red)
-
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -111,9 +111,9 @@ fun LoginScreen(
                     ),
                     singleLine = true,
                     modifier = Modifier
-                        .padding(horizontal = 16.dp)
+                        .padding(horizontal = mediumSpace)
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(mediumSpace))
                 StandardTextField(
                     text = passwordState.text,
                     onValueChange = {
@@ -136,38 +136,38 @@ fun LoginScreen(
                     ),
                     singleLine = true,
                     modifier = Modifier
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = mediumSpace),
                     isPasswordVisible = passwordState.isPasswordVisible,
                     onPasswordToggleClick = {
                         viewModel.onEvent(LoginEvent.ToggledPasswordVisibility)
                     }
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(mediumSpace))
                 Button(
                     onClick = { navigator.navigate(MainAppScreenDestination) },
                     shape = MaterialTheme.shapes.large,
                     border = BorderStroke(2.dp, MaterialTheme.colorScheme.onPrimary),
-                    contentPadding = PaddingValues(16.dp),
+                    contentPadding = PaddingValues(mediumSpace),
                     modifier = Modifier
                         .align(Alignment.End)
-                        .padding(end = 16.dp)
+                        .padding(end = mediumSpace)
                 ) {
                     Text(
                         text = stringResource(id = R.string.login),
                         fontSize = 16.sp
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(smallSpace))
                     Icon(
                         imageVector = Icons.Default.Login,
                         contentDescription = stringResource(id = R.string.login_icon)
                     )
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(mediumSpace))
                 Text(
                     text = stringResource(id = R.string.forgot_password),
                     fontStyle = FontStyle.Italic,
                     modifier = Modifier
-                        .padding(bottom = 16.dp)
+                        .padding(bottom = mediumSpace)
                         .clickable {
                             navigator.navigate(ForgotPasswordScreenDestination)
                         }
@@ -184,7 +184,7 @@ fun LoginScreen(
                 text = stringResource(id = R.string.dont_have_an_account),
                 modifier = Modifier
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(smallSpace))
             Text(
                 text = stringResource(id = R.string.sign_up),
                 fontSize = 16.sp,

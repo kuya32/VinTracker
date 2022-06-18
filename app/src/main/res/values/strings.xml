@@ -26,4 +26,7 @@
     <string name="dont_have_an_account">Don\'t have an account?</string>
     <string name="sign_up">Sign up</string>
     <string name="forgot_password">Forgot password?</string>
+    <string name="forgot_password_image">Forgot password image</string>
+    <string name="enter_email_associated_account">Please enter the email address associated with the account.</string>
+    <string name="submit">Submit</string>
 </resources>
