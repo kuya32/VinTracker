@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.github.kuya32.vintracker.core.domain.states.PasswordTextFieldState
 import com.github.kuya32.vintracker.core.domain.states.StandardTextFieldState
+import com.github.kuya32.vintracker.feature_auth.presentation.login.LoginEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -28,6 +29,12 @@ class SignUpViewModel @Inject constructor(): ViewModel() {
 
     private val _confirmPasswordState = mutableStateOf(PasswordTextFieldState())
     val confirmPasswordState: State<PasswordTextFieldState> = _confirmPasswordState
+
+    private val _isBoxCheckedState = mutableStateOf(false)
+    val isBoxCheckedState: State<Boolean> = _isBoxCheckedState
+
+    private val _signUpState = mutableStateOf(SignUpState())
+    val signUpState: State<SignUpState> = _signUpState
 
     fun onEvent(event: SignUpEvent) {
          when (event) {
@@ -56,10 +63,23 @@ class SignUpViewModel @Inject constructor(): ViewModel() {
                      text = event.value
                  )
              }
+             is SignUpEvent.ToggledPasswordVisibility -> {
+                 _passwordState.value = _passwordState.value.copy(
+                     isPasswordVisible = !passwordState.value.isPasswordVisible
+                 )
+             }
              is SignUpEvent.EnteredConfirmPassword -> {
                  _confirmPasswordState.value = _confirmPasswordState.value.copy(
                      text = event.value
                  )
+             }
+             is SignUpEvent.ToggledConfirmationPasswordVisibility -> {
+                 _confirmPasswordState.value = _confirmPasswordState.value.copy(
+                     isPasswordVisible = !confirmPasswordState.value.isPasswordVisible
+                 )
+             }
+             is SignUpEvent.ToggledCheckBox -> {
+                 _isBoxCheckedState.value = !isBoxCheckedState.value
              }
              is SignUpEvent.SignUp -> {
                  signUp()

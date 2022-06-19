@@ -29,4 +29,15 @@
     <string name="forgot_password_image">Forgot password image</string>
     <string name="enter_email_associated_account">Please enter the email address associated with the account.</string>
     <string name="submit">Submit</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="first_name_required">First name required!</string>
+    <string name="last_name_required">Last name required!</string>
+    <string name="username">Username</string>
+    <string name="username_required">Username required!</string>
+    <string name="invalid_email">Invalid email!</string>
+    <string name="invalid_password">Invalid password!</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="password_does_not_match">Password does not match!</string>
+    <string name="agree_to_terms_and_services">Agree to terms and services</string>
 </resources>

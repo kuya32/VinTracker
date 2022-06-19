@@ -10,5 +10,7 @@ sealed class SignUpEvent{
     data class EnteredPassword(val value: String): SignUpEvent()
     data class EnteredConfirmPassword(val value: String): SignUpEvent()
     object ToggledPasswordVisibility: SignUpEvent()
+    object ToggledConfirmationPasswordVisibility: SignUpEvent()
+    object ToggledCheckBox: SignUpEvent()
     object SignUp: SignUpEvent()
 }
