@@ -40,4 +40,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="password_does_not_match">Password does not match!</string>
     <string name="agree_to_terms_and_services">Agree to terms and services</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="phone_number_required">Phone number required!</string>
+    <string name="error_unknown">Unknown error</string>
 </resources>

@@ -46,6 +46,7 @@ fun SignUpScreen(
 ) {
     val firstNameState = viewModel.firstNameState.value
     val lastNameState = viewModel.lastNameState.value
+    val phoneNumberState = viewModel.phoneNumberState.value
     val usernameState = viewModel.usernameState.value
     val emailState = viewModel.emailState.value
     val passwordState = viewModel.passwordState.value
@@ -135,6 +136,31 @@ fun SignUpScreen(
                             .weight(1f)
                     )
                 }
+                Spacer(modifier = Modifier.height(mediumSpace))
+                StandardTextField(
+                    text = phoneNumberState.text,
+                    onValueChange = {
+                        viewModel.onEvent(SignUpEvent.EnteredPhoneNumber(it))
+                    },
+                    label = stringResource(id = R.string.phone_number),
+                    hint = "",
+                    leadingIcon = Icons.Default.Phone,
+                    error = when (phoneNumberState.error) {
+                        is AuthErrors.FieldEmpty -> {
+                            stringResource(id = R.string.phone_number_required)
+                        }
+                        else -> ""
+                    },
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next,
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                    ),
+                    singleLine = true,
+                    modifier = Modifier
+                        .padding(horizontal = mediumSpace)
+                )
                 Spacer(modifier = Modifier.height(mediumSpace))
                 StandardTextField(
                     text = usernameState.text,

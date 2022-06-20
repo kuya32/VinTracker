@@ -18,6 +18,9 @@ class SignUpViewModel @Inject constructor(): ViewModel() {
     private val _lastNameState = mutableStateOf(StandardTextFieldState())
     val lastNameState: State<StandardTextFieldState> = _lastNameState
 
+    private val _phoneNumberState = mutableStateOf(StandardTextFieldState())
+    val phoneNumberState: State<StandardTextFieldState> = _phoneNumberState
+
     private val _usernameState = mutableStateOf(StandardTextFieldState())
     val usernameState: State<StandardTextFieldState> = _usernameState
 
@@ -47,6 +50,11 @@ class SignUpViewModel @Inject constructor(): ViewModel() {
                 _lastNameState.value = _lastNameState.value.copy(
                     text = event.value
                 )
+             }
+             is SignUpEvent.EnteredPhoneNumber -> {
+                 _phoneNumberState.value = _phoneNumberState.value.copy(
+                     text = event.value
+                 )
              }
              is SignUpEvent.EnteredUsername -> {
                  _usernameState.value = _usernameState.value.copy(
