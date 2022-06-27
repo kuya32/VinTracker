@@ -1,4 +1,4 @@
-package com.github.kuya32.vintracker
+package com.github.kuya32.vintracker.core.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +17,7 @@ class MainViewModel @Inject constructor(): ViewModel() {
 
     init {
         viewModelScope.launch {
-            delay(5000)
+            delay(500)
             _isLoading.value = false
         }
     }

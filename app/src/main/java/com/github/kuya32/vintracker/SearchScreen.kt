@@ -19,12 +19,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 
 @OptIn(ExperimentalMaterial3Api::class)
+@AppNavGraph(start = true)
+@Destination
 @Composable
-fun SearchScreen(
-    innerPadding: PaddingValues
-) {
+fun SearchScreen() {
     var radioState by remember {
         mutableStateOf(true)
     }
@@ -33,7 +35,6 @@ fun SearchScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(innerPadding)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
