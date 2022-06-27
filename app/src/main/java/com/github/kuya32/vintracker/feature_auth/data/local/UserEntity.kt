@@ -1,4 +1,4 @@
-package com.github.kuya32.vintracker.feature_auth.data
+package com.github.kuya32.vintracker.feature_auth.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class UserEntity(
     val firstName: String,
     val lastName: String,
+    val accountImageUrl: String,
     val phoneNumber: String,
     val username: String,
     val email: String,

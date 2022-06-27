@@ -3,7 +3,7 @@ package com.github.kuya32.vintracker.feature_auth.data.repository
 import com.github.kuya32.vintracker.core.utils.SimpleResource
 import com.github.kuya32.vintracker.feature_auth.domain.repository.AuthRepository
 
-class AuthRepository(
+class AuthRepositoryImpl(
 
 ): AuthRepository {
 

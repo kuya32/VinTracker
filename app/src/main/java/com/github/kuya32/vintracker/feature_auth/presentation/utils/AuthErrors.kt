@@ -8,4 +8,5 @@ sealed class AuthErrors: Error() {
     object InvalidEmail: AuthErrors()
     object InvalidPassword: AuthErrors()
     object PasswordDoesNotMatch: AuthErrors()
+    object InvalidPhoneNumber: AuthErrors()
 }
