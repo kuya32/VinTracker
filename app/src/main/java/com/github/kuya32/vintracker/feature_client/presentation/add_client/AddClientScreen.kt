@@ -1,16 +1,21 @@
 package com.github.kuya32.vintracker.feature_client.presentation.add_client
 
 import android.app.Activity.RESULT_OK
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -28,11 +34,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.github.kuya32.vintracker.AddClientNavGraph
 import com.github.kuya32.vintracker.AppNavGraph
 import com.github.kuya32.vintracker.R
 import com.github.kuya32.vintracker.core.presentation.components.StandardTextField
+import com.github.kuya32.vintracker.core.presentation.components.StandardToolbar
 import com.github.kuya32.vintracker.core.presentation.ui.theme.extraLargeSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.extraSmallSpace
+import com.github.kuya32.vintracker.core.presentation.ui.theme.largeSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.mediumSpace
 import com.github.kuya32.vintracker.feature_auth.presentation.sign_up.SignUpEvent
 import com.github.kuya32.vintracker.feature_auth.presentation.sign_up.SignUpViewModel
@@ -44,8 +53,9 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@RequiresApi(Build.VERSION_CODES.N)
 @RootNavGraph(start = true)
-//@AppNavGraph
+//@AddClientNavGraph(start = true)
 @Destination
 @Composable
 fun AddClientScreen(
@@ -53,28 +63,30 @@ fun AddClientScreen(
     focusManager: FocusManager = LocalFocusManager.current,
     viewModel: AddClientViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val clientFirstNameState = viewModel.clientFirstNameState.value
     val clientLastNameState = viewModel.clientLastNameState.value
-    val context = LocalContext.current
-    val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, viewModel.field)
-        .setCountry("US")
-        .setTypeFilter(TypeFilter.ADDRESS)
-        .build(context)
-    val autoCompleteLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    val clientEmailState = viewModel.clientEmailState.value
+    val clientPhoneNumberState = viewModel.clientPhoneNumberState.value
+    val clientDateOfBirth = viewModel.clientDateOfBirth.value
 
-        if (it.resultCode == RESULT_OK) {
-            val place = it.data?.let { it1 -> Autocomplete.getPlaceFromIntent(it1) }
-            clientFirstNameState.text = place?.address.toString()
-        }
-    }
-
-
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
+    Column(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
     ) {
+        StandardToolbar(
+            navigator = navigator,
+            showBackArrow = true,
+            title = {
+                Text(
+                    text = stringResource(id = R.string.client_info),
+                )
+            }
+        )
         Box(
-            contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(mediumSpace)
@@ -82,28 +94,22 @@ fun AddClientScreen(
                 .background(MaterialTheme.colorScheme.primary)
         ) {
             Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(largeSpace)
             ) {
-                Text(
-                    text = stringResource(id = R.string.add_a_client),
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(start = mediumSpace)
-                )
-                Spacer(modifier = Modifier.height(extraLargeSpace))
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
+
                 ) {
                     StandardTextField(
                         text = clientFirstNameState.text,
                         onValueChange = {
-                            viewModel.onEvent(AddClientEvent.EnteredClientFirstName(it))
+                            viewModel.onEvent(AddClientEvent.EnteredClientFirstName(it), null)
                         },
                         label = stringResource(id = R.string.first_name),
                         hint = "",
@@ -122,13 +128,13 @@ fun AddClientScreen(
                         ),
                         singleLine = true,
                         modifier = Modifier
-                            .padding(start = mediumSpace, end = extraSmallSpace)
+                            .padding(end = extraSmallSpace)
                             .weight(1f)
                     )
                     StandardTextField(
                         text = clientLastNameState.text,
                         onValueChange = {
-                            viewModel.onEvent(AddClientEvent.EnteredClientFirstName(it))
+                            viewModel.onEvent(AddClientEvent.EnteredClientFirstName(it), null)
                         },
                         label = stringResource(id = R.string.last_name),
                         hint = "",
@@ -147,14 +153,96 @@ fun AddClientScreen(
                         ),
                         singleLine = true,
                         modifier = Modifier
-                            .padding(start = extraSmallSpace, end = mediumSpace)
+                            .padding(start = extraSmallSpace)
                             .weight(1f)
                     )
                 }
-                Spacer(modifier = Modifier.height(mediumSpace))
-                Button(onClick = { autoCompleteLauncher.launch(intent) }) {
-                    Text(text = "Hello)")
-                }
+                Spacer(modifier = Modifier.height(largeSpace))
+                StandardTextField(
+                    text = clientEmailState.text,
+                    onValueChange = {
+                        viewModel.onEvent(AddClientEvent.EnteredClientEmail(it), null)
+                    },
+                    label = stringResource(id = R.string.email),
+                    hint = "",
+                    leadingIcon = Icons.Default.Email,
+                    error = when (clientEmailState.error) {
+                        is AuthErrors.FieldEmpty -> {
+                            stringResource(id = R.string.last_name_required)
+                        }
+                        else -> ""
+                    },
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next,
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                    ),
+                    singleLine = true
+                )
+                Spacer(modifier = Modifier.height(largeSpace))
+                StandardTextField(
+                    text = clientPhoneNumberState.text,
+                    onValueChange = {
+                        viewModel.onEvent(AddClientEvent.EnteredClientPhoneNumber(it), null)
+                    },
+                    label = stringResource(id = R.string.phone_number),
+                    hint = "",
+                    leadingIcon = Icons.Default.Phone,
+                    error = when (clientPhoneNumberState.error) {
+                        is AuthErrors.FieldEmpty -> {
+                            stringResource(id = R.string.last_name_required)
+                        }
+                        else -> ""
+                    },
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next,
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                    ),
+                    singleLine = true
+                )
+                Spacer(modifier = Modifier.height(largeSpace))
+                StandardTextField(
+                    text = clientDateOfBirth,
+                    onValueChange = {},
+                    isEnabled = false,
+                    label = stringResource(id = R.string.date_of_birth),
+                    hint = "",
+                    leadingIcon = Icons.Default.Cake,
+                    error = "",
+                    imeAction = ImeAction.Next,
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                    ),
+                    singleLine = true,
+                    modifier = Modifier
+                        .clickable { viewModel.onEvent(AddClientEvent.DateOfBirthClicked, context) }
+                )
+            }
+            Button(
+                onClick = { /*TODO*/ },
+                border = BorderStroke(
+                    2.dp,
+                    Color.White
+                ),
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = largeSpace)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.next),
+                    fontSize = 16.sp
+                )
+                Spacer(modifier = Modifier.width(extraSmallSpace))
+                Icon(
+                    imageVector = Icons.Default.ChevronRight,
+                    contentDescription = stringResource(id = R.string.next),
+                    modifier = Modifier
+                        .size(16.dp)
+                )
             }
         }
     }
