@@ -43,9 +43,11 @@ import com.github.kuya32.vintracker.core.presentation.ui.theme.extraLargeSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.extraSmallSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.largeSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.mediumSpace
+import com.github.kuya32.vintracker.destinations.AddClientAddressDestination
 import com.github.kuya32.vintracker.feature_auth.presentation.sign_up.SignUpEvent
 import com.github.kuya32.vintracker.feature_auth.presentation.sign_up.SignUpViewModel
 import com.github.kuya32.vintracker.feature_auth.presentation.utils.AuthErrors
+import com.github.kuya32.vintracker.feature_client.domain.models.Client
 import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
@@ -109,7 +111,7 @@ fun AddClientScreen(
                     StandardTextField(
                         text = clientFirstNameState.text,
                         onValueChange = {
-                            viewModel.onEvent(AddClientEvent.EnteredClientFirstName(it), null)
+                            viewModel.onEvent(AddClientEvent.EnteredClientFirstName(it))
                         },
                         label = stringResource(id = R.string.first_name),
                         hint = "",
@@ -134,7 +136,7 @@ fun AddClientScreen(
                     StandardTextField(
                         text = clientLastNameState.text,
                         onValueChange = {
-                            viewModel.onEvent(AddClientEvent.EnteredClientFirstName(it), null)
+                            viewModel.onEvent(AddClientEvent.EnteredClientLastName(it))
                         },
                         label = stringResource(id = R.string.last_name),
                         hint = "",
@@ -161,7 +163,7 @@ fun AddClientScreen(
                 StandardTextField(
                     text = clientEmailState.text,
                     onValueChange = {
-                        viewModel.onEvent(AddClientEvent.EnteredClientEmail(it), null)
+                        viewModel.onEvent(AddClientEvent.EnteredClientEmail(it))
                     },
                     label = stringResource(id = R.string.email),
                     hint = "",
@@ -184,7 +186,7 @@ fun AddClientScreen(
                 StandardTextField(
                     text = clientPhoneNumberState.text,
                     onValueChange = {
-                        viewModel.onEvent(AddClientEvent.EnteredClientPhoneNumber(it), null)
+                        viewModel.onEvent(AddClientEvent.EnteredClientPhoneNumber(it))
                     },
                     label = stringResource(id = R.string.phone_number),
                     hint = "",
@@ -196,9 +198,9 @@ fun AddClientScreen(
                         else -> ""
                     },
                     keyboardType = KeyboardType.Phone,
-                    imeAction = ImeAction.Next,
-                    keyboardActions = KeyboardActions(onNext = {
-                        focusManager.moveFocus(FocusDirection.Down)
+                    imeAction = ImeAction.Done,
+                    keyboardActions = KeyboardActions(onDone = {
+                        focusManager.clearFocus()
                     }
                     ),
                     singleLine = true
@@ -212,25 +214,28 @@ fun AddClientScreen(
                     hint = "",
                     leadingIcon = Icons.Default.Cake,
                     error = "",
-                    imeAction = ImeAction.Next,
-                    keyboardActions = KeyboardActions(onNext = {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                    ),
                     singleLine = true,
                     modifier = Modifier
                         .clickable { viewModel.onEvent(AddClientEvent.DateOfBirthClicked, context) }
                 )
             }
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { navigator.navigate(AddClientAddressDestination(
+                    client = Client(
+                        fullName = "${clientFirstNameState.text} ${clientLastNameState.text}",
+                        email = clientEmailState.text,
+                        phoneNumber = clientPhoneNumberState.text,
+                        dateOfBirth = clientDateOfBirth
+                    )
+                ))},
                 border = BorderStroke(
                     2.dp,
                     Color.White
                 ),
                 modifier = Modifier
+                    .fillMaxWidth()
                     .align(Alignment.BottomCenter)
-                    .padding(bottom = largeSpace)
+                    .padding(start = largeSpace, end = largeSpace, bottom = largeSpace)
             ) {
                 Text(
                     text = stringResource(id = R.string.next),

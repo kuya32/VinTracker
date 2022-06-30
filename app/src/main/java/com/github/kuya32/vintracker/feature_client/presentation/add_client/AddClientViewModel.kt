@@ -2,12 +2,14 @@ package com.github.kuya32.vintracker.feature_client.presentation.add_client
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.res.Resources
 import android.os.Build
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.github.kuya32.vintracker.R
 import com.github.kuya32.vintracker.core.domain.states.StandardTextFieldState
 import com.github.kuya32.vintracker.core.utils.Constants
 import com.google.android.libraries.places.api.Places
@@ -23,10 +25,11 @@ class AddClientViewModel @Inject constructor(
 ): ViewModel() {
 
     init {
-        Places.initialize(context, "")
+        Places.initialize(context, "AIzaSyBmCz9bqFmBiBQVhspsUeGwWR2iWoQuKOI")
     }
 
     val field = listOf(Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
+    val states = context.resources.getStringArray(R.array.states_list)
 
     private val _clientFirstNameState = mutableStateOf(StandardTextFieldState())
     val clientFirstNameState: State<StandardTextFieldState> = _clientFirstNameState
@@ -43,11 +46,31 @@ class AddClientViewModel @Inject constructor(
     private val _clientDateOfBirthState = mutableStateOf("")
     val clientDateOfBirth: State<String> = _clientDateOfBirthState
 
+    private val _clientAddressState = mutableStateOf(StandardTextFieldState())
+    val clientAddressState: State<StandardTextFieldState> = _clientAddressState
+
+    private val _clientOptionalAddressState = mutableStateOf(StandardTextFieldState())
+    val clientOptionalAddressState: State<StandardTextFieldState> = _clientOptionalAddressState
+
+    private val _clientCityState = mutableStateOf(StandardTextFieldState())
+    val clientCityState: State<StandardTextFieldState> = _clientCityState
+
+    private val _isExpanded = mutableStateOf(false)
+    val isExpanded: State<Boolean> = _isExpanded
+
+    private val _selectedDropdownTextState = mutableStateOf("")
+    val selectedDropdownTextState: State<String> = _selectedDropdownTextState
+
+    private val _clientZipcodeState = mutableStateOf(StandardTextFieldState())
+    val clientZipcodeState: State<StandardTextFieldState> = _clientZipcodeState
+
+
+
     private val _addClientState = mutableStateOf(AddClientState())
     val addClientState: State<AddClientState> = _addClientState
 
     @RequiresApi(Build.VERSION_CODES.N)
-    fun onEvent(event: AddClientEvent, context: Context?) {
+    fun onEvent(event: AddClientEvent, context: Context? = null, clientAddress: List<String>? = null) {
         when (event) {
             is AddClientEvent.EnteredClientFirstName -> {
                 _clientFirstNameState.value = _clientFirstNameState.value.copy(
@@ -69,9 +92,6 @@ class AddClientViewModel @Inject constructor(
                     text = event.value
                 )
             }
-            is AddClientEvent.AddressTextFieldClicked -> {
-
-            }
             is AddClientEvent.DateOfBirthClicked -> {
                 val calendar = Calendar.getInstance()
                 val year = calendar.get(Calendar.YEAR)
@@ -86,6 +106,22 @@ class AddClientViewModel @Inject constructor(
                         }, year, month, day
                     ).show()
                 }
+            }
+            is AddClientEvent.ClientAddressChosen -> {
+                _clientAddressState.value = _clientAddressState.value.copy(
+                    text = clientAddress?.get(0).toString()
+                )
+                _clientCityState.value = _clientCityState.value.copy(
+                    text = clientAddress?.get(1).toString()
+                )
+            }
+            is AddClientEvent.EnteredClientOptionalAddress -> {
+                _clientOptionalAddressState.value = _clientOptionalAddressState.value.copy(
+                    text = event.value
+                )
+            }
+            is AddClientEvent.ChooseClientState -> {
+                
             }
         }
     }

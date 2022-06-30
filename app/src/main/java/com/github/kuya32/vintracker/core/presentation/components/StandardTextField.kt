@@ -34,6 +34,7 @@ fun StandardTextField(
     text: String = "",
     onValueChange: (String) -> Unit,
     isEnabled: Boolean = true,
+    readOnly: Boolean = false,
     label: String = "",
     hint: String = "",
     leadingIcon: ImageVector? = null,
@@ -56,6 +57,7 @@ fun StandardTextField(
             }
         },
         enabled = isEnabled,
+        readOnly = readOnly,
         modifier = modifier
             .fillMaxWidth()
             .semantics {
