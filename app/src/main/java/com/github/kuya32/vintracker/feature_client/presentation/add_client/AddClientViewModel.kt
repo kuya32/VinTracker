@@ -3,6 +3,8 @@ package com.github.kuya32.vintracker.feature_client.presentation.add_client
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
@@ -29,7 +31,7 @@ class AddClientViewModel @Inject constructor(
     }
 
     val field = listOf(Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
-    val states = context.resources.getStringArray(R.array.states_list)
+    val states: Array<String> = context.resources.getStringArray(R.array.states_list)
 
     private val _clientFirstNameState = mutableStateOf(StandardTextFieldState())
     val clientFirstNameState: State<StandardTextFieldState> = _clientFirstNameState
@@ -64,13 +66,29 @@ class AddClientViewModel @Inject constructor(
     private val _clientZipcodeState = mutableStateOf(StandardTextFieldState())
     val clientZipcodeState: State<StandardTextFieldState> = _clientZipcodeState
 
+    private val _clientLicenseState = mutableStateOf(StandardTextFieldState())
+    val clientLicenseState: State<StandardTextFieldState> = _clientLicenseState
 
+    private val _isCameraSelected = mutableStateOf(false)
+    val isCameraSelected: State<Boolean> = _isCameraSelected
+
+    private val _licenseImageUri = mutableStateOf<Uri?>(null)
+    var licenseImageUri: State<Uri?> = _licenseImageUri
+
+    private val _licenseBitmap = mutableStateOf<Bitmap?>(null)
+    val licenseBitmap: State<Bitmap?> = _licenseBitmap
 
     private val _addClientState = mutableStateOf(AddClientState())
     val addClientState: State<AddClientState> = _addClientState
 
     @RequiresApi(Build.VERSION_CODES.N)
-    fun onEvent(event: AddClientEvent, context: Context? = null, clientAddress: List<String>? = null) {
+    fun onEvent(
+        event: AddClientEvent,
+        context: Context? = null,
+        clientAddress: List<String>? = null,
+        licenseUri: Uri? = null,
+        licenseBitmap: Bitmap? = null
+    ) {
         when (event) {
             is AddClientEvent.EnteredClientFirstName -> {
                 _clientFirstNameState.value = _clientFirstNameState.value.copy(
@@ -114,14 +132,37 @@ class AddClientViewModel @Inject constructor(
                 _clientCityState.value = _clientCityState.value.copy(
                     text = clientAddress?.get(1).toString()
                 )
+                _selectedDropdownTextState.value = clientAddress?.get(2).toString()
+                _clientZipcodeState.value = _clientZipcodeState.value.copy(
+                    text = clientAddress?.get(3).toString()
+                )
             }
             is AddClientEvent.EnteredClientOptionalAddress -> {
                 _clientOptionalAddressState.value = _clientOptionalAddressState.value.copy(
                     text = event.value
                 )
             }
+            is AddClientEvent.StateDropdownClicked -> {
+                _isExpanded.value = !_isExpanded.value
+            }
             is AddClientEvent.ChooseClientState -> {
-                
+                _selectedDropdownTextState.value = clientAddress?.get(0).toString()
+            }
+            is AddClientEvent.LaunchCameraForLicense -> {
+                _licenseImageUri.let {
+                    if (!isCameraSelected.value) {
+                        
+                    }
+                }
+            }
+            is AddClientEvent.LaunchGalleryForLicense -> {
+
+            }
+            is AddClientEvent.ChooseCamera -> {
+                _isCameraSelected.value = true
+            }
+            is AddClientEvent.ChooseFromGallery -> {
+                _isCameraSelected.value = false
             }
         }
     }

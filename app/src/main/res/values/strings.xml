@@ -54,6 +54,14 @@
     <string name="city_required">City required!</string>
     <string name="address_optional">Apt., suite, etc. (Optional)</string>
     <string name="state">State</string>
+    <string name="zipcode">Zipcode</string>
+    <string name="zipcode_required">Zipcode required!</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="license_required">License required!</string>
+    <string name="drivers_license">Driver\'s License</string>
 
     <string-array name="states_list">
         <item>AL</item>

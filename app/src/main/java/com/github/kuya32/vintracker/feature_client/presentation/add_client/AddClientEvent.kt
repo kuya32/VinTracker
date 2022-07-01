@@ -9,8 +9,12 @@ sealed class AddClientEvent {
     data class EnteredClientDriversLicense(val value: String): AddClientEvent()
     data class EnteredClientNotes(val value: String): AddClientEvent()
     object ClientAddressChosen: AddClientEvent()
+    object StateDropdownClicked: AddClientEvent()
     object ChooseClientState: AddClientEvent()
     object DateOfBirthClicked: AddClientEvent()
-    object TakePhotoOfClientLicense: AddClientEvent()
+    object LaunchCameraForLicense: AddClientEvent()
+    object LaunchGalleryForLicense: AddClientEvent()
+    object ChooseCamera: AddClientEvent()
+    object ChooseFromGallery: AddClientEvent()
     object AddClient: AddClientEvent()
 }
