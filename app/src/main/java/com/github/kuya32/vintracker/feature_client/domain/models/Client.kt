@@ -10,4 +10,7 @@ data class Client(
     val phoneNumber: String = "",
     val dateOfBirth: String = "",
     val address: String = "",
+    val license: String = "",
+    val licenseImageUrl: String = "",
+    val notes: String = ""
 ): Parcelable

@@ -10,10 +10,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -32,6 +29,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -73,7 +72,7 @@ fun AddClientLicenseScreen(
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        viewModel.onEvent(event = AddClientEvent.LaunchGalleryForLicense, licenseUri = uri)
+        viewModel.onEvent(event = AddClientEvent.LaunchGalleryForLicense, context = context, licenseUri = uri)
     }
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
@@ -248,7 +247,7 @@ fun AddClientLicenseScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = largeSpace)
-                        .height(300.dp)
+                        .height(350.dp)
                         .border(1.dp, Color.White, MaterialTheme.shapes.medium)
                         .clickable {
                             coroutineScope.launch {
@@ -260,11 +259,24 @@ fun AddClientLicenseScreen(
                             }
                         }
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(id = R.string.add_photo),
-                        tint = Color.White
-                    )
+                    if (viewModel.isPhotoSelected.value) {
+                        viewModel.licenseBitmap.value?.let {
+                            Image(
+                                bitmap = it.asImageBitmap(),
+                                contentDescription = stringResource(id = R.string.license_photo),
+                                alignment = Alignment.Center,
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                contentScale = ContentScale.Fit
+                            )
+                        }
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(id = R.string.add_photo),
+                            tint = Color.White
+                        )
+                    }
                 }
             }
             Button(

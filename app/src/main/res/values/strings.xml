@@ -62,6 +62,7 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="license_required">License required!</string>
     <string name="drivers_license">Driver\'s License</string>
+    <string name="license_photo">License Photo</string>
 
     <string-array name="states_list">
         <item>AL</item>

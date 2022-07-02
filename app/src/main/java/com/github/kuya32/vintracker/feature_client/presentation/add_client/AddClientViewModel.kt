@@ -4,8 +4,10 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
@@ -72,10 +74,13 @@ class AddClientViewModel @Inject constructor(
     private val _isCameraSelected = mutableStateOf(false)
     val isCameraSelected: State<Boolean> = _isCameraSelected
 
+    private val _isPhotoSelected = mutableStateOf(false)
+    val isPhotoSelected: State<Boolean> = _isPhotoSelected
+
     private val _licenseImageUri = mutableStateOf<Uri?>(null)
     var licenseImageUri: State<Uri?> = _licenseImageUri
 
-    private val _licenseBitmap = mutableStateOf<Bitmap?>(null)
+    private var _licenseBitmap = mutableStateOf<Bitmap?>(null)
     val licenseBitmap: State<Bitmap?> = _licenseBitmap
 
     private val _addClientState = mutableStateOf(AddClientState())
@@ -149,14 +154,23 @@ class AddClientViewModel @Inject constructor(
                 _selectedDropdownTextState.value = clientAddress?.get(0).toString()
             }
             is AddClientEvent.LaunchCameraForLicense -> {
-                _licenseImageUri.let {
-                    if (!isCameraSelected.value) {
-                        
-                    }
+                _isPhotoSelected.value = true
+                licenseBitmap?.let {
+                    _licenseBitmap.value = it
                 }
             }
             is AddClientEvent.LaunchGalleryForLicense -> {
-
+                _isPhotoSelected.value = true
+                licenseUri?.let {
+                    if (!isCameraSelected.value) {
+                        _licenseBitmap.value = if (Build.VERSION.SDK_INT < 28) {
+                            MediaStore.Images.Media.getBitmap(context?.contentResolver, it)
+                        } else {
+                            val source = ImageDecoder.createSource(context?.contentResolver!!, it!!)
+                            ImageDecoder.decodeBitmap(source)
+                        }
+                    }
+                }
             }
             is AddClientEvent.ChooseCamera -> {
                 _isCameraSelected.value = true
