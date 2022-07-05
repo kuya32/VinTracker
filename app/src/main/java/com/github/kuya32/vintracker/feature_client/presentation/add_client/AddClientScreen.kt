@@ -36,14 +36,17 @@ import com.github.kuya32.vintracker.core.presentation.components.StandardToolbar
 import com.github.kuya32.vintracker.core.presentation.ui.theme.extraSmallSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.largeSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.mediumSpace
+import com.github.kuya32.vintracker.core.presentation.ui.theme.smallSpace
 import com.github.kuya32.vintracker.destinations.AddClientAddressScreenDestination
 import com.github.kuya32.vintracker.feature_auth.presentation.utils.AuthErrors
 import com.github.kuya32.vintracker.feature_client.domain.models.Client
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@RequiresApi(Build.VERSION_CODES.N)
-@AddClientNavGraph(start = true)
+@RequiresApi(Build.VERSION_CODES.Q  )
+@RootNavGraph(start = true)
+//@AddClientNavGraph(start = true)
 @Destination
 @Composable
 fun AddClientScreen(
@@ -57,30 +60,28 @@ fun AddClientScreen(
     val clientEmailState = viewModel.clientEmailState.value
     val clientPhoneNumberState = viewModel.clientPhoneNumberState.value
     val clientDateOfBirth = viewModel.clientDateOfBirth.value
+    val clientNotesState = viewModel.clientNotesState.value
 
-    Column(
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
     ) {
-        StandardToolbar(
-            navigator = navigator,
-            showBackArrow = true,
-            title = {
-                Text(
-                    text = stringResource(id = R.string.client_info),
-                )
-            }
-        )
-        Box(
+        Column(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(mediumSpace)
-                .clip(RoundedCornerShape(30.dp))
-                .background(MaterialTheme.colorScheme.primary)
         ) {
+            StandardToolbar(
+                navigator = navigator,
+                showBackArrow = true,
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.client_info),
+                    )
+                }
+            )
             Column(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -201,43 +202,85 @@ fun AddClientScreen(
                     error = "",
                     singleLine = true,
                     modifier = Modifier
-                        .clickable { viewModel.onEvent(AddClientEvent.DateOfBirthClicked, context) }
-                )
-            }
-            Button(
-                onClick = {
-                    navigator.navigate(
-                        AddClientAddressScreenDestination(
-                            client = Client(
-                                fullName = "${clientFirstNameState.text} ${clientLastNameState.text}",
-                                email = clientEmailState.text,
-                                phoneNumber = clientPhoneNumberState.text,
-                                dateOfBirth = clientDateOfBirth
+                        .clickable {
+                            viewModel.onEvent(
+                                event = AddClientEvent.DateOfBirthClicked,
+                                context = context
                             )
-                        )
-                    )
-                },
-                border = BorderStroke(
-                    2.dp,
-                    Color.White
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .padding(start = largeSpace, end = largeSpace, bottom = largeSpace)
-            ) {
-                Text(
-                    text = stringResource(id = R.string.next),
-                    fontSize = 16.sp
+                        }
                 )
-                Spacer(modifier = Modifier.width(extraSmallSpace))
-                Icon(
-                    imageVector = Icons.Default.ChevronRight,
-                    contentDescription = stringResource(id = R.string.next),
+                Spacer(modifier = Modifier.height(largeSpace))
+                // TODO: Notes input does not show multiple lines
+                StandardTextField(
+                    text = clientNotesState.text,
+                    onValueChange = {
+                        viewModel.onEvent(AddClientEvent.EnteredClientNotes(it))
+                    },
+                    label = stringResource(id = R.string.notes),
+                    hint = "",
+                    leadingIcon = Icons.Default.Summarize,
+                    error = when (clientNotesState.error) {
+                        is AuthErrors.FieldEmpty -> {
+                            stringResource(id = R.string.license_required)
+                        }
+                        else -> ""
+                    },
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done,
+                    keyboardActions = KeyboardActions(onDone = {
+                        focusManager.clearFocus()
+                    }),
+                    singleLine = true,
+                    maxLength = 500,
+                    maxLines = 5,
                     modifier = Modifier
-                        .size(16.dp)
+                        .fillMaxWidth()
+                        .height(150.dp)
+                        .background(Color.White, RoundedCornerShape(smallSpace)),
+                    shape = RoundedCornerShape(smallSpace)
                 )
             }
         }
+        Button(
+            onClick = {
+                navigator.navigate(
+                    AddClientAddressScreenDestination(
+                        client = Client(
+                            fullName = "${clientFirstNameState.text} ${clientLastNameState.text}",
+                            email = clientEmailState.text,
+                            phoneNumber = clientPhoneNumberState.text,
+                            dateOfBirth = clientDateOfBirth
+                        )
+                    )
+                )
+            },
+            border = BorderStroke(
+                2.dp,
+                MaterialTheme.colorScheme.background
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(start = largeSpace, end = largeSpace, bottom = largeSpace)
+        ) {
+            Text(
+                text = stringResource(id = R.string.next),
+                fontSize = 16.sp
+            )
+            Spacer(modifier = Modifier.width(extraSmallSpace))
+            Icon(
+                imageVector = Icons.Default.ChevronRight,
+                contentDescription = stringResource(id = R.string.next),
+                modifier = Modifier
+                    .size(16.dp)
+            )
+        }
     }
+}
+
+@AddClientNavGraph(start = true)
+@Destination
+@Composable
+fun randomComposable() {
+
 }

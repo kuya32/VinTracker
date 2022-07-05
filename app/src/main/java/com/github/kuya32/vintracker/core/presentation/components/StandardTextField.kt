@@ -48,6 +48,7 @@ fun StandardTextField(
     isPasswordToggleDisplayed: Boolean = keyboardType == KeyboardType.Password,
     isPasswordVisible: Boolean = false,
     onPasswordToggleClick: (Boolean) -> Unit = {},
+    shape: Shape = MaterialTheme.shapes.extraSmall
 ) {
     TextField(
         value = text,
@@ -116,7 +117,8 @@ fun StandardTextField(
         ),
         keyboardActions = keyboardActions,
         singleLine = singleLine,
-        maxLines = maxLines
+        maxLines = maxLines,
+        shape = shape
     )
     if (error.isNotEmpty()) {
         Text(

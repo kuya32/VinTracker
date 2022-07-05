@@ -49,7 +49,7 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@RequiresApi(Build.VERSION_CODES.N)
+@RequiresApi(Build.VERSION_CODES.Q)
 @AddClientNavGraph
 @Destination
 @Composable
@@ -86,19 +86,23 @@ fun AddClientAddressScreen(
                 val state = place?.addressComponents?.asList()?.get(5)?.shortName.toString()
                 val zipcode = place?.addressComponents?.asList()?.get(7)?.name.toString()
                 val addressList = listOf(address, city, state, zipcode)
-                viewModel.onEvent(AddClientEvent.ClientAddressChosen, null, addressList)
+                viewModel.onEvent(
+                    event = AddClientEvent.ClientAddressChosen,
+                    clientAddress =  addressList
+                )
             }
         }
 
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
     ) {
         Column(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black)
         ) {
             StandardToolbar(
                 navigator = navigator,
@@ -201,7 +205,10 @@ fun AddClientAddressScreen(
                                         Text(text = label)
                                     },
                                     onClick = {
-                                        viewModel.onEvent(AddClientEvent.ChooseClientState, null, listOf(label))
+                                        viewModel.onEvent(
+                                            event = AddClientEvent.ChooseClientState,
+                                            clientAddress = listOf(label)
+                                        )
                                         viewModel.onEvent(AddClientEvent.StateDropdownClicked)
                                     })
                             }
@@ -230,13 +237,13 @@ fun AddClientAddressScreen(
             onClick = {
                       navigator.navigate(
                           AddClientLicenseScreenDestination(
-//                              client = Client(
-//                                  fullName = client.fullName,
-//                                  email = client.email,
-//                                  phoneNumber = client.phoneNumber,
-//                                  dateOfBirth = client.dateOfBirth,
-//                                  address = "$clientAddressText $clientCityText, $selectedDropdownTextState, $clientZipcodeText"
-//                              )
+                              client = Client(
+                                  fullName = client.fullName,
+                                  email = client.email,
+                                  phoneNumber = client.phoneNumber,
+                                  dateOfBirth = client.dateOfBirth,
+                                  address = "$clientAddressText $clientCityText, $selectedDropdownTextState, $clientZipcodeText"
+                              )
                           )
                       )
             },

@@ -17,12 +17,12 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Description
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.github.kuya32.vintracker.AddClientNavGraph
 import com.github.kuya32.vintracker.R
 import com.github.kuya32.vintracker.core.presentation.components.StandardTextField
 import com.github.kuya32.vintracker.core.presentation.components.StandardToolbar
@@ -49,19 +50,18 @@ import com.github.kuya32.vintracker.core.presentation.ui.theme.extraSmallSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.largeSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.mediumSpace
 import com.github.kuya32.vintracker.feature_auth.presentation.utils.AuthErrors
+import com.github.kuya32.vintracker.feature_client.domain.models.Client
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.N)
+@RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalMaterialApi::class)
-@RootNavGraph(start = true)
-//@AddClientNavGraph
+@AddClientNavGraph
 @Destination
 @Composable
 fun AddClientLicenseScreen(
-//    client: Client,
+    client: Client,
     navigator: DestinationsNavigator,
     focusManager: FocusManager = LocalFocusManager.current,
     viewModel: AddClientViewModel = hiltViewModel(),
@@ -77,7 +77,7 @@ fun AddClientLicenseScreen(
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap: Bitmap? ->
-        viewModel.onEvent(event = AddClientEvent.LaunchCameraForLicense, licenseBitmap = bitmap)
+        viewModel.onEvent(event = AddClientEvent.LaunchCameraForLicense, context = context, licenseBitmap = bitmap)
     }
     val permissionsLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
@@ -199,21 +199,22 @@ fun AddClientLicenseScreen(
             .background(MaterialTheme.colorScheme.background)
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black)
         ) {
             Column(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black)
             ) {
                 StandardToolbar(
                     navigator = navigator,
                     showBackArrow = true,
                     title = {
                         Text(
-                            text = stringResource(id = R.string.client_address),
+                            text = stringResource(id = R.string.client_license),
                         )
                     }
                 )
@@ -221,7 +222,7 @@ fun AddClientLicenseScreen(
                 StandardTextField(
                     text = clientLicenseState.text,
                     onValueChange = {
-                        viewModel.onEvent(AddClientEvent.EnteredClientFirstName(it))
+                        viewModel.onEvent(AddClientEvent.EnteredClientDriversLicense(it))
                     },
                     label = stringResource(id = R.string.drivers_license),
                     hint = "",
@@ -280,7 +281,18 @@ fun AddClientLicenseScreen(
                 }
             }
             Button(
-                onClick = {},
+                onClick = {
+                      viewModel.onEvent(
+                          event = AddClientEvent.AddClient,
+                          client = Client(
+                              fullName = client.fullName,
+                              email = client.email,
+                              phoneNumber = client.phoneNumber,
+                              dateOfBirth = client.dateOfBirth,
+                              address = client.address
+                          )
+                      )
+                },
                 border = BorderStroke(
                     2.dp,
                     Color.White
@@ -291,13 +303,13 @@ fun AddClientLicenseScreen(
                     .padding(start = largeSpace, end = largeSpace, bottom = largeSpace)
             ) {
                 Text(
-                    text = stringResource(id = R.string.next),
+                    text = stringResource(id = R.string.add_client),
                     fontSize = 16.sp
                 )
                 Spacer(modifier = Modifier.width(extraSmallSpace))
                 Icon(
-                    imageVector = Icons.Default.ChevronRight,
-                    contentDescription = stringResource(id = R.string.next),
+                    imageVector = Icons.Default.PersonAdd,
+                    contentDescription = stringResource(id = R.string.add_client),
                     modifier = Modifier
                         .size(16.dp)
                 )
