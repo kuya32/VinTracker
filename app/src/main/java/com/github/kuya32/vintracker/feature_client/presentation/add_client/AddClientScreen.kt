@@ -45,8 +45,7 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @RequiresApi(Build.VERSION_CODES.Q  )
-@RootNavGraph(start = true)
-//@AddClientNavGraph(start = true)
+@AddClientNavGraph(start = true)
 @Destination
 @Composable
 fun AddClientScreen(
@@ -276,11 +275,4 @@ fun AddClientScreen(
             )
         }
     }
-}
-
-@AddClientNavGraph(start = true)
-@Destination
-@Composable
-fun randomComposable() {
-
 }

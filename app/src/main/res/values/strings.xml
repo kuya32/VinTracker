@@ -66,6 +66,9 @@
     <string name="notes">Notes</string>
     <string name="add_client">Add Client</string>
     <string name="client_license">Client License</string>
+    <string name="client_item_phone_number">Phone: %s</string>
+    <string name="client_item_email">Email: %s</string>
+    <string name="client_search">Client Search</string>
 
     <string-array name="states_list">
         <item>AL</item>
