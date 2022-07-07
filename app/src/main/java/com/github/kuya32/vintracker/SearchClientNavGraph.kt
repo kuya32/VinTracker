@@ -4,6 +4,6 @@ import com.ramcosta.composedestinations.annotation.NavGraph
 
 @AppNavGraph
 @NavGraph
-annotation class AddClientNavGraph(
+annotation class SearchClientNavGraph(
     val start: Boolean = false
 )
