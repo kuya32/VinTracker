@@ -4,5 +4,4 @@ object Constants {
 
     const val MIN_PASSWORD_LENGTH = 3
     const val MIN_USERNAME_LENGTH = 3
-    const val TEMP_GOOGLE_API_KEY = "AIzaSyD6zVWKcsLTl-gspOnRsFwry_GXT9_uIrI"
 }
