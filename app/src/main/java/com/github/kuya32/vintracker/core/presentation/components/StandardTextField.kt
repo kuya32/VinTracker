@@ -33,6 +33,8 @@ fun StandardTextField(
     modifier: Modifier = Modifier,
     text: String = "",
     onValueChange: (String) -> Unit,
+    isEnabled: Boolean = true,
+    readOnly: Boolean = false,
     label: String = "",
     hint: String = "",
     leadingIcon: ImageVector? = null,
@@ -46,6 +48,7 @@ fun StandardTextField(
     isPasswordToggleDisplayed: Boolean = keyboardType == KeyboardType.Password,
     isPasswordVisible: Boolean = false,
     onPasswordToggleClick: (Boolean) -> Unit = {},
+    shape: Shape = MaterialTheme.shapes.extraSmall
 ) {
     TextField(
         value = text,
@@ -54,6 +57,8 @@ fun StandardTextField(
                 onValueChange(it)
             }
         },
+        enabled = isEnabled,
+        readOnly = readOnly,
         modifier = modifier
             .fillMaxWidth()
             .semantics {
@@ -112,7 +117,8 @@ fun StandardTextField(
         ),
         keyboardActions = keyboardActions,
         singleLine = singleLine,
-        maxLines = maxLines
+        maxLines = maxLines,
+        shape = shape
     )
     if (error.isNotEmpty()) {
         Text(
