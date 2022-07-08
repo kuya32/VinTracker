@@ -70,6 +70,12 @@
     <string name="client_item_email">Email: %s</string>
     <string name="client_search">Client Search</string>
     <string name="client_details">%s Details</string>
+    <string name="email_detail"><b>Email:</b> %s</string>
+    <string name="phone_detail"><b>Phone:</b> %s</string>
+    <string name="dob_detail"><b>Date of Birth:</b> %s</string>
+    <string name="address_detail"><b>Address:</b> %s</string>
+    <string name="license_detail">Driver\'s Licence: %s</string>
+    <string name="notes_detail">Notes: %s</string>
 
     <string-array name="states_list">
         <item>AL</item>
