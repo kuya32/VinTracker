@@ -1,9 +1,10 @@
-package com.github.kuya32.vintracker
+package com.github.kuya32.vintracker.feature_car.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,14 +20,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.github.kuya32.vintracker.AppNavGraph
+import com.github.kuya32.vintracker.R
+import com.github.kuya32.vintracker.core.presentation.components.StandardToolbar
+import com.github.kuya32.vintracker.destinations.CarListingsScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @AppNavGraph(start = true)
 @Destination
 @Composable
-fun SearchScreen() {
+fun SearchCarScreen(
+    navigator: DestinationsNavigator,
+    viewModel: CarViewModel = hiltViewModel()
+) {
     var radioState by remember {
         mutableStateOf(true)
     }
@@ -98,7 +108,7 @@ fun SearchScreen() {
             singleLine = true
         )
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { navigator.navigate(CarListingsScreenDestination) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 64.dp)
@@ -114,10 +124,11 @@ fun SearchScreen() {
             contentPadding = PaddingValues(16.dp)
         ) {
             items(20) {
-                Image(painter = painterResource(id = R.drawable.ic_vintracker_logo), contentDescription = null)
+                Image(
+                    painter = painterResource(id = R.drawable.ic_vintracker_logo),
+                    contentDescription = null
+                )
             }
         }
     }
-
-
 }
