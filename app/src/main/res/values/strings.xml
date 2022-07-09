@@ -76,6 +76,11 @@
     <string name="address_detail"><b>Address:</b> %s</string>
     <string name="license_detail">Driver\'s Licence: %s</string>
     <string name="notes_detail">Notes: %s</string>
+    <string name="car_details">%s Details</string>
+    <string name="car">Car</string>
+    <string name="year">Year</string>
+    <string name="color">Color:</string>
+    <string name="price">"Price: "</string>
 
     <string-array name="states_list">
         <item>AL</item>

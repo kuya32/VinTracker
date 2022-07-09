@@ -22,7 +22,6 @@ import com.ramcosta.composedestinations.utils.navGraph
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RootNavGraph(start = true)
 @Destination
 @Composable
 fun MainAppScreen(
@@ -85,15 +84,10 @@ fun MainAppScreen(
         Scaffold(
             topBar = {
                 AppBar(
-                    navigator = navigator,
-                    navController = navController,
-                    onHamburgerIconClick = {
+                    onNavigationIconClick = {
                         scope.launch {
                             drawerState.open()
                         }
-                    },
-                    onBackIconClick = {
-                        navigator.navigateUp()
                     }
                 )
             },
