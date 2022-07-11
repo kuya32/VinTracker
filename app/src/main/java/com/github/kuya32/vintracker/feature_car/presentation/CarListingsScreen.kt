@@ -51,7 +51,7 @@ fun CarListingsScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .clickable {
-                            navigator.navigate(CarDetailScreenDestination)
+                            navigator.navigate(CarDetailScreenDestination())
                         }
                 )
             }

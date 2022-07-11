@@ -81,6 +81,10 @@
     <string name="year">Year</string>
     <string name="color">Color:</string>
     <string name="price">"Price: "</string>
+    <string name="available">Available</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="locate">Locate</string>
+    <string name="status">Status:</string>
 
     <string-array name="states_list">
         <item>AL</item>
