@@ -1,5 +1,11 @@
 package com.github.kuya32.vintracker.feature_car.presentation
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -24,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.kuya32.vintracker.AppNavGraph
 import com.github.kuya32.vintracker.R
@@ -32,6 +40,7 @@ import com.github.kuya32.vintracker.core.presentation.ui.theme.extraSmallSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.largeSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.mediumSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.smallSpace
+import com.github.kuya32.vintracker.destinations.CarMapScreenDestination
 import com.github.kuya32.vintracker.feature_car.domain.models.Car
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -47,8 +56,30 @@ fun CarDetailScreen(
         model = "Crosstrek"
     ),
     navigator: DestinationsNavigator,
-    viewModel: CarViewModel = hiltViewModel()
+    viewModel: CarViewModel = hiltViewModel(),
+    context: Context = LocalContext.current
 ) {
+    val permissionsLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            viewModel.onEvent(CarEvent.InitiateGoogleMaps)
+        } else {
+            Toast.makeText(context, "Permission denied!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    when (PackageManager.PERMISSION_GRANTED) {
+        ContextCompat.checkSelfPermission(
+            context, Manifest.permission.ACCESS_FINE_LOCATION
+        ) -> {
+
+        }
+        else -> {
+            permissionsLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -127,7 +158,9 @@ fun CarDetailScreen(
                 )
             }
             Button(
-                onClick = {  },
+                onClick = {
+                          navigator.navigate(CarMapScreenDestination())
+                },
                 enabled = viewModel.isAvailable.value,
                 modifier = Modifier
                     .clip(RoundedCornerShape(24.dp))

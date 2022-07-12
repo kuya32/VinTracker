@@ -85,6 +85,7 @@
     <string name="unavailable">Unavailable</string>
     <string name="locate">Locate</string>
     <string name="status">Status:</string>
+    <string name="marker_on_car">Marker on the %s</string>
 
     <string-array name="states_list">
         <item>AL</item>

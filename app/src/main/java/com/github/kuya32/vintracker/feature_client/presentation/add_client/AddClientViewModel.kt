@@ -36,7 +36,7 @@ class AddClientViewModel @Inject constructor(
 ): ViewModel() {
 
     init {
-        Places.initialize(context, "AIzaSyBulx9oD5F-tk94fR2YguiC_FVVKlziFRY")
+        Places.initialize(context, "")
     }
 
     val field = listOf(Place.Field.ADDRESS_COMPONENTS, Place.Field.LAT_LNG)
