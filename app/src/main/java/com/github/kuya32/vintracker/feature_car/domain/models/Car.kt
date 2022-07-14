@@ -1,5 +1,9 @@
 package com.github.kuya32.vintracker.feature_car.domain.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Car(
     val carImage: String = "",
     val year: String,
@@ -11,4 +15,4 @@ data class Car(
     val carCoordinates: CarCoordinates = CarCoordinates(0.00, 0.00),
     val isAvailable: Boolean = false,
     val checkedOutLast: String = "",
-)
+): Parcelable

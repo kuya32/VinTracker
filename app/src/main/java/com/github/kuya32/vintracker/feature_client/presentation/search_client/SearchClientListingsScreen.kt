@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.kuya32.vintracker.R
-import com.github.kuya32.vintracker.SearchClientNavGraph
+import com.github.kuya32.vintracker.core.presentation.navigation.SearchClientNavGraph
 import com.github.kuya32.vintracker.core.presentation.components.StandardToolbar
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState

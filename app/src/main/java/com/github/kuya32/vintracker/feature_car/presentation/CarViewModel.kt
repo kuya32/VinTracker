@@ -18,10 +18,6 @@ class CarViewModel @Inject constructor(
     val permissionsGranted: State<Boolean> = _permissionsGranted
 
     fun onEvent(event: CarEvent) {
-        when (event) {
-            CarEvent.InitiateGoogleMaps -> {
-                _permissionsGranted.value = true
-            }
-        }
+
     }
 }

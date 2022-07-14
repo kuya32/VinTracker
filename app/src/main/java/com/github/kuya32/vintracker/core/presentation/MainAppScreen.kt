@@ -1,4 +1,4 @@
-package com.github.kuya32.vintracker
+package com.github.kuya32.vintracker.core.presentation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,15 +10,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.github.kuya32.vintracker.DrawerBody
+import com.github.kuya32.vintracker.DrawerHeader
+import com.github.kuya32.vintracker.core.presentation.components.MenuItem
+import com.github.kuya32.vintracker.NavGraphs
 import com.github.kuya32.vintracker.core.presentation.components.AppBar
 import com.github.kuya32.vintracker.destinations.AddClientScreenDestination
 import com.github.kuya32.vintracker.destinations.SearchClientListingsScreenDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.utils.allDestinations
-import com.ramcosta.composedestinations.utils.navGraph
+import com.github.kuya32.vintracker.R
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

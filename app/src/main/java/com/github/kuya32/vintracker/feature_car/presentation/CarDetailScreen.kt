@@ -8,7 +8,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -33,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.github.kuya32.vintracker.AppNavGraph
+import com.github.kuya32.vintracker.core.presentation.navigation.AppNavGraph
 import com.github.kuya32.vintracker.R
 import com.github.kuya32.vintracker.core.presentation.components.StandardToolbar
 import com.github.kuya32.vintracker.core.presentation.ui.theme.extraSmallSpace
@@ -43,18 +42,13 @@ import com.github.kuya32.vintracker.core.presentation.ui.theme.smallSpace
 import com.github.kuya32.vintracker.destinations.CarMapScreenDestination
 import com.github.kuya32.vintracker.feature_car.domain.models.Car
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @AppNavGraph
 @Destination
 @Composable
 fun CarDetailScreen(
-    car: Car = Car(
-        year = "1990",
-        make = "Subaru",
-        model = "Crosstrek"
-    ),
+    car: Car,
     navigator: DestinationsNavigator,
     viewModel: CarViewModel = hiltViewModel(),
     context: Context = LocalContext.current
@@ -63,20 +57,9 @@ fun CarDetailScreen(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            viewModel.onEvent(CarEvent.InitiateGoogleMaps)
+            Toast.makeText(context, "Permission granted!", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context, "Permission denied!", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    when (PackageManager.PERMISSION_GRANTED) {
-        ContextCompat.checkSelfPermission(
-            context, Manifest.permission.ACCESS_FINE_LOCATION
-        ) -> {
-
-        }
-        else -> {
-            permissionsLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
 
@@ -159,7 +142,20 @@ fun CarDetailScreen(
             }
             Button(
                 onClick = {
-                          navigator.navigate(CarMapScreenDestination())
+                    when (PackageManager.PERMISSION_GRANTED) {
+                        ContextCompat.checkSelfPermission(
+                            context, Manifest.permission.ACCESS_FINE_LOCATION
+                        ) -> {
+                            navigator.navigate(
+                                CarMapScreenDestination(
+                                    car = car
+                                )
+                            )
+                        }
+                        else -> {
+                            permissionsLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                        }
+                    }
                 },
                 enabled = viewModel.isAvailable.value,
                 modifier = Modifier
