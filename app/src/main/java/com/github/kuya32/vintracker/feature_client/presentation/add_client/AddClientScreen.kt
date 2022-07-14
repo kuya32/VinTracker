@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
@@ -29,19 +28,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.github.kuya32.vintracker.AddClientNavGraph
+import com.github.kuya32.vintracker.core.presentation.navigation.AddClientNavGraph
 import com.github.kuya32.vintracker.R
 import com.github.kuya32.vintracker.core.presentation.components.StandardTextField
 import com.github.kuya32.vintracker.core.presentation.components.StandardToolbar
 import com.github.kuya32.vintracker.core.presentation.ui.theme.extraSmallSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.largeSpace
-import com.github.kuya32.vintracker.core.presentation.ui.theme.mediumSpace
 import com.github.kuya32.vintracker.core.presentation.ui.theme.smallSpace
 import com.github.kuya32.vintracker.destinations.AddClientAddressScreenDestination
 import com.github.kuya32.vintracker.feature_auth.presentation.utils.AuthErrors
 import com.github.kuya32.vintracker.feature_client.domain.models.Client
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @RequiresApi(Build.VERSION_CODES.Q  )

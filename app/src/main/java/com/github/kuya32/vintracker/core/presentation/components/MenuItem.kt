@@ -1,4 +1,4 @@
-package com.github.kuya32.vintracker
+package com.github.kuya32.vintracker.core.presentation.components
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

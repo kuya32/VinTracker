@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.github.kuya32.vintracker.AddClientNavGraph
+import com.github.kuya32.vintracker.core.presentation.navigation.AddClientNavGraph
 import com.github.kuya32.vintracker.R
 import com.github.kuya32.vintracker.core.presentation.components.StandardTextField
 import com.github.kuya32.vintracker.core.presentation.components.StandardToolbar
